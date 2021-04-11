@@ -1,0 +1,35 @@
+## input x as matrix
+## instantiate the solved for value "solved" as a null
+
+makeCacheMatrix <- function(x = matrix()) {
+  solved <- NULL
+  set <- function(y) {
+    x <<- y
+    solved <<- NULL
+  }
+  get <- function() x
+  setsolve <- function(solve) solved <<- solve
+  getsolve <- function() solved
+  list(set = set, get = get, setsolve = setsolve, getsolve = getsolve)
+}
+
+
+#solving
+cacheSolve <- function(x, ...) {
+  solved <- x$getsolve()
+  if(!is.null(solved)) {
+    message("getting inversed matrix")
+    return(solved)
+  }
+  data <- x$get()
+  solved <- solve(data, ...)
+  x$setsolve(solved)
+  solved
+}
+
+
+#test against a mock matrix
+testmatrix <- makeCacheMatrix(matrix(1:4, nrow = 2, ncol = 2))
+cacheSolve(testmatrix)
+
+
